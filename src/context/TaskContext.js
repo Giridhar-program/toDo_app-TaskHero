@@ -42,28 +42,29 @@ const isYesterday = (date1, date2) => {
 
 // --- COLOR PALETTES ---
 const lightColors = {
-  background: '#F7F8FA',
-  cardBackground: 'rgba(255, 255, 255, 0.75)', // Glass effect
+  background: '#F9FAFB', // Glass effect
   cardBorder: 'rgba(255, 255, 255, 0.2)',
   inputBackground: 'rgba(255, 255, 255, 0.5)',
   text: '#212121',
-  textSecondary: '#757575',
-  primary: '#6A85FF',
+  primary: '#007AFF',
   primaryText: '#FFFFFF',
   border: '#E0E0E0',
   placeholder: '#9E9E9E',
   theme: 'light',
+  card: 'rgba(255, 255, 255, 0.6)',
+  secondaryText: '#6e6e73',
 };
 
 const darkColors = {
-  background: '#121212',
+  background: '#0D0D0D',
   cardBackground: 'rgba(30, 30, 30, 0.7)', // Glass effect
   cardBorder: 'rgba(255, 255, 255, 0.1)',
+  card: 'rgba(25, 25, 25, 0.6)',
   inputBackground: 'rgba(50, 50, 50, 0.6)',
   text: '#E0E0E0',
-  textSecondary: '#BDBDBD',
+  secondaryText: '#A1A1AA',
   primary: '#8A9EFF',
-  primaryText: '#FFFFFF',
+  primaryText: '#0A84FF',
   border: '#424242',
   placeholder: '#757575',
   theme: 'dark',

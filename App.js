@@ -1,59 +1,80 @@
-// App.js
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur'; // Import BlurView here
-import { StyleSheet, Platform } from 'react-native'; // Import StyleSheet & Platform
+import { BlurView } from 'expo-blur';
+import { StyleSheet, Platform, View } from 'react-native';
 
-// Import Provider and Hook from context
 import { TaskProvider, useTasks } from './src/context/TaskContext';
-// Import Screens
 import DashboardScreen from './src/screens/DashboardScreen';
 import TasksScreen from './src/screens/TasksScreen';
 
 const Tab = createBottomTabNavigator();
 
-// Component to render the tabs, using context for styling
 function AppTabs() {
-  const { colors, theme } = useTasks(); // Get theme info from context
+  const { colors, theme } = useTasks();
+
+  const tabBarBackgroundColor =
+    theme === 'light' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(18, 18, 18, 0.3)';
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'Dashboard') {
-            iconName = focused ? 'home' : 'home';
-          } else if (route.name === 'Tasks') {
-            iconName = focused ? 'check-square' : 'check-square';
-          }
-          iconName = iconName || 'help-circle'; // Fallback
-          return <Feather name={iconName} size={size} color={color} />;
+          if (route.name === 'Dashboard') iconName = 'home';
+          else if (route.name === 'Tasks') iconName = 'check-square';
+
+          return (
+            <Feather
+              name={iconName}
+              size={focused ? size + 2 : size}
+              color={focused ? colors.primary : colors.secondaryText}
+              style={{
+                shadowColor: colors.primary,
+                shadowOpacity: focused ? 0.25 : 0,
+                shadowRadius: 6,
+                transform: [{ scale: focused ? 1.1 : 1 }],
+              }}
+            />
+          );
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.secondaryText,
         tabBarStyle: {
-          backgroundColor: 'transparent', // Make default background transparent
-          position: 'absolute', // Make it float
-          borderTopWidth: 0, // Remove top border
-          elevation: 0, // Remove Android shadow
-          height: 70, // Increase height
-          paddingBottom: 10,
-          paddingTop: 5,
+          position: 'absolute',
+          backgroundColor: 'transparent',
+          borderTopWidth: 0,
+          elevation: 0,
+          height: 75,
+          marginHorizontal: 20,
+          borderRadius: 25,
+          bottom: 20,
+          overflow: 'hidden',
         },
-        tabBarBackground: () => ( // Add BlurView as tab bar background
-          <BlurView
-            intensity={Platform.OS === 'ios' ? 80 : 100}
-            tint={theme} // Use theme from context
-            style={[StyleSheet.absoluteFill, { overflow: 'hidden', borderTopLeftRadius: 20, borderTopRightRadius: 20 }]} // Apply blur to fill and round corners
-          />
+        tabBarBackground: () => (
+          <View
+            style={{
+              flex: 1,
+              borderRadius: 25,
+              overflow: 'hidden',
+              backgroundColor: tabBarBackgroundColor,
+            }}
+          >
+            <BlurView
+              intensity={Platform.OS === 'ios' ? 70 : 100}
+              tint={theme}
+              style={StyleSheet.absoluteFill}
+            />
+          </View>
         ),
         tabBarLabelStyle: {
-           fontSize: 12,
-           marginBottom: 5, // Adjust label position
+          fontSize: 12,
+          marginBottom: 8,
+          fontWeight: '600',
         },
-        headerShown: false, // Use titles within screens
+        headerShown: false,
       })}
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
@@ -62,7 +83,6 @@ function AppTabs() {
   );
 }
 
-// Main App: Wraps everything in the Provider
 export default function App() {
   return (
     <TaskProvider>
@@ -71,9 +91,9 @@ export default function App() {
   );
 }
 
-// Wrapper needed to access context for StatusBar styling
 function AppWrapper() {
-  const { theme } = useTasks(); // Get theme from context
+  const { theme } = useTasks();
+
   return (
     <NavigationContainer>
       <AppTabs />
